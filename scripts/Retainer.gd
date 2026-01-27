@@ -13,6 +13,7 @@ var current_state: State = State.IDLE
 var target_grid_pos: Vector2i = Vector2i(-1, -1)
 var target_position_cache: Vector2 = Vector2.ZERO
 var home_position: Vector2 = Vector2.ZERO
+var assigned_area: Vector2i = Vector2i(-1, -1) # -1,-1 means no assignment
 
 func _ready() -> void:
 	if data == null:
@@ -112,6 +113,21 @@ func set_state(new_state: State) -> void:
 func find_work() -> void:
 	# Logic to find dry crops via World
 	var world = get_parent()
+	
+	if assigned_area != Vector2i(-1, -1):
+		# Priority: Check assigned area
+		if world.has_method("is_crop_dry") and world.is_crop_dry(assigned_area):
+			print("Retainer: Going to assigned task at ", assigned_area)
+			target_grid_pos = assigned_area
+			var world_pos = world.tile_map.map_to_local(assigned_area)
+			set_movement_target(world_pos)
+			return
+		else:
+			# Assigned area has no work. 
+			# For now, if assigned, ONLY work there.
+			print("Retainer: Assigned area ", assigned_area, " has no work.")
+			return
+
 	if world.has_method("get_nearest_dry_crop"):
 		var grid_pos = world.get_nearest_dry_crop(global_position)
 		if grid_pos != Vector2i(-1, -1):

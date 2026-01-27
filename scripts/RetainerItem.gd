@@ -2,9 +2,9 @@ extends Control
 
 var data: RetainerData
 
-@onready var name_label: Label = $NameLabel
-@onready var job_label: Label = $JobLabel
-@onready var icon: TextureRect = $Icon
+@onready var name_label: Label = $HBoxContainer/InfoBox/NameLabel
+@onready var job_label: Label = $HBoxContainer/InfoBox/JobLabel
+@onready var icon: TextureRect = $HBoxContainer/Icon
 
 func setup(p_data: RetainerData) -> void:
 	data = p_data

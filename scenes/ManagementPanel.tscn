@@ -1,0 +1,113 @@
+[gd_scene load_steps=2 format=3 uid="uid://management_panel_uid"]
+
+[ext_resource type="Script" path="res://scripts/ManagementPanel.gd" id="1_script"]
+
+[node name="ManagementPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.1, 0.95)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "门客列表"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/LeftPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RightPanel" type="TabContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="封地概览" type="VBoxContainer" parent="HBoxContainer/RightPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/RightPanel/封地概览"]
+layout_mode = 2
+text = "拖拽门客到对应地块指派工作"
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/RightPanel/封地概览"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="市场" type="VBoxContainer" parent="HBoxContainer/RightPanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="FoodLabel" type="Label" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "粮仓: 0"
+
+[node name="CropLabel" type="Label" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "作物库存: 0"
+
+[node name="MoneyLabel" type="Label" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "铜钱: 0"
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+
+[node name="SellButton" type="Button" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "卖出作物 (+5 铜钱)"
+
+[node name="BuyFoodButton" type="Button" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "购买粮食 (5 铜钱 -> 1 粮食)"
+
+[node name="ConvertButton" type="Button" parent="HBoxContainer/RightPanel/市场"]
+layout_mode = 2
+text = "作物转粮食 (1 作物 -> 1 粮食)"
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 41.0
+grow_horizontal = 0
+text = "X"

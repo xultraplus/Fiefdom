@@ -8,3 +8,5 @@ res://scripts/Player.gd
 res://scenes/Main.tscn
 res://scripts/Retainer.gd
 res://scripts/RetainerData.gd
+res://scripts/ManagementPanel.gd
+res://scripts/RetainerItem.gd

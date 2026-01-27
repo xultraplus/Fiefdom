@@ -5,7 +5,11 @@ extends CanvasLayer
 @onready var king_label: Label = $Control/KingLabel
 @onready var stamina_label: Label = $Control/StaminaLabel
 @onready var sleep_button: Button = $Control/SleepButton
+@onready var manage_button: Button = $Control/ManageButton
 @onready var fader: ColorRect = $Control/Fader
+
+var management_panel_scene = preload("res://scenes/ManagementPanel.tscn")
+var management_panel_instance: Control
 
 func _ready() -> void:
 	# Connect global signals
@@ -15,8 +19,45 @@ func _ready() -> void:
 	
 	# Connect button
 	sleep_button.pressed.connect(_on_sleep_pressed)
+	manage_button.pressed.connect(_on_manage_pressed)
+	
+	GameEvents.game_over.connect(_on_game_over)
 	
 	update_ui()
+
+func _on_game_over() -> void:
+	var label = Label.new()
+	label.text = "游戏结束：褫夺封地\n(连续3天未上缴)"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.add_theme_font_size_override("font_size", 48)
+	label.add_theme_color_override("font_color", Color.RED)
+	
+	var bg = ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.8)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	
+	$Control.add_child(bg)
+	$Control.add_child(label)
+	
+	# Disable input
+	sleep_button.disabled = true
+	manage_button.disabled = true
+
+func _on_manage_pressed() -> void:
+	if management_panel_instance == null:
+		management_panel_instance = management_panel_scene.instantiate()
+		$Control.add_child(management_panel_instance)
+		management_panel_instance.get_node("CloseButton").pressed.connect(_on_close_management)
+	else:
+		management_panel_instance.visible = true
+		if management_panel_instance.has_method("refresh_retainers"):
+			management_panel_instance.refresh_retainers()
+
+func _on_close_management() -> void:
+	if management_panel_instance:
+		management_panel_instance.visible = false
 
 func _on_sleep_pressed() -> void:
 	var tween = create_tween()

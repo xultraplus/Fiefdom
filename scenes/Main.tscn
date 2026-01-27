@@ -4,6 +4,7 @@
 [ext_resource type="TileSet" path="res://resources/game_tileset.tres" id="2_tileset"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_player"]
 [ext_resource type="Script" uid="uid://dd0uqup0hk8b5" path="res://scripts/UIManager.gd" id="4_ui"]
+[ext_resource type="Theme" uid="uid://game_theme_uid" path="res://resources/game_theme.tres" id="5_theme"]
 
 [node name="Main" type="Node" unique_id=310311831]
 
@@ -30,6 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("5_theme")
 
 [node name="DayLabel" type="Label" parent="UI/Control" unique_id=1377062417]
 layout_mode = 0
@@ -89,6 +91,21 @@ offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "睡觉"
+
+[node name="ManageButton" type="Button" parent="UI/Control" unique_id=987123654]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -40.0
+offset_right = -90.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "管理"
 
 [node name="Fader" type="ColorRect" parent="UI/Control" unique_id=730486771]
 layout_mode = 1

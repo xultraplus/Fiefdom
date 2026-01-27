@@ -6,6 +6,7 @@ extends Node2D
 
 # Dictionary to store active crops: { Vector2i: { "data": CropData, "age": int, "watered": bool } }
 var active_crops: Dictionary = {}
+var retainer_instances: Dictionary = {} # RetainerData -> Retainer Node
 
 # Preload crop data (for prototype)
 var millet_data = preload("res://scripts/CropData.gd").new()
@@ -19,6 +20,7 @@ func _ready() -> void:
 	millet_data.stages_atlas_coords = stages
 	
 	GameEvents.day_advanced.connect(_on_day_advanced)
+	GameEvents.retainer_assigned.connect(_on_retainer_assigned)
 	
 	# Setup initial map for testing (3x3 grid)
 	setup_test_map()
@@ -29,8 +31,9 @@ func _ready() -> void:
 	# Inject dependency
 	player.tile_map_ref = tile_map
 	
-	# Spawn a test retainer
-	spawn_retainer()
+	# Spawn retainers from Global
+	for r_data in Global.retainers:
+		spawn_retainer(r_data)
 
 func setup_navigation() -> void:
 	var nav_region = NavigationRegion2D.new()
@@ -47,10 +50,24 @@ func setup_navigation() -> void:
 	
 	print("Navigation Setup Complete")
 
-func spawn_retainer() -> void:
+func spawn_retainer(data: RetainerData) -> void:
 	var retainer = retainer_scene.instantiate()
-	retainer.global_position = Vector2(100, 100)
+	retainer.data = data
+	retainer.global_position = Vector2(100, 100) # Spawn point
 	add_child(retainer)
+	retainer_instances[data] = retainer
+
+func _on_retainer_assigned(data: RetainerData, grid_pos: Vector2i) -> void:
+	if retainer_instances.has(data):
+		var retainer = retainer_instances[data]
+		retainer.assigned_area = grid_pos
+		retainer.set_state(retainer.State.IDLE) # Trigger logic update
+		print("World: Assigned ", data.name, " to ", grid_pos)
+
+func is_crop_dry(grid_pos: Vector2i) -> bool:
+	if active_crops.has(grid_pos):
+		return not active_crops[grid_pos]["watered"]
+	return false
 
 func get_nearest_dry_crop(from_pos: Vector2) -> Vector2i:
 	var nearest_pos = Vector2i(-1, -1)

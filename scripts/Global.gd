@@ -24,6 +24,15 @@ func restore_stamina() -> void:
 	
 	# Daily consumption
 	consume_food()
+	
+	# Check contribution
+	days_without_contribution += 1
+	if days_without_contribution >= 3:
+		trigger_game_over()
+
+func trigger_game_over() -> void:
+	print("GAME OVER: Retainer revolt or King's wrath!")
+	GameEvents.game_over.emit()
 
 func consume_food() -> void:
 	var consumption = retainers.size() * 1
