@@ -14,3 +14,6 @@ res://scenes/ManagementPanel.tscn
 res://scripts/Arrow.gd
 res://scripts/Enemy.gd
 res://scripts/ItemManager.gd
+res://resources/game_theme.tres
+res://scenes/DialoguePanel.tscn
+res://scenes/RetainerItem.tscn
