@@ -6,3 +6,5 @@ res://resources/game_tileset.tres
 res://scripts/CropData.gd
 res://scripts/Player.gd
 res://scenes/Main.tscn
+res://scripts/Retainer.gd
+res://scripts/RetainerData.gd

@@ -19,8 +19,9 @@ func _ready() -> void:
 		data = RetainerData.new()
 		
 	# Set up navigation agent
-	navigation_agent.path_desired_distance = 4.0
-	navigation_agent.target_desired_distance = 4.0
+	# Relaxing distance constraints to avoid getting stuck near target
+	navigation_agent.path_desired_distance = 10.0
+	navigation_agent.target_desired_distance = 10.0
 	
 	# Initial home position (spawn point)
 	home_position = global_position
@@ -83,6 +84,9 @@ func _process_work() -> void:
 	# Better to do the await in a separate function call from set_state or use a flag.
 	pass
 
+func _process_rest() -> void:
+	pass
+
 # Called when entering WORK state
 func start_working():
 	await get_tree().create_timer(1.0).timeout
@@ -94,11 +98,9 @@ func set_state_work():
 	start_working()
 
 func set_state(new_state: State) -> void:
-	# Override set_state to handle WORK special case if needed
-	# But better to just modify the main set_state
 	var old_state = current_state
 	current_state = new_state
-	# print("Retainer State: ", State.keys()[new_state])
+	print("Retainer: State changed from ", State.keys()[old_state], " to ", State.keys()[new_state])
 	
 	if new_state == State.IDLE:
 		find_work()
@@ -113,12 +115,13 @@ func find_work() -> void:
 	if world.has_method("get_nearest_dry_crop"):
 		var grid_pos = world.get_nearest_dry_crop(global_position)
 		if grid_pos != Vector2i(-1, -1):
+			print("Retainer: Found work at ", grid_pos)
 			target_grid_pos = grid_pos
 			# Convert grid to world pos
 			var world_pos = world.tile_map.map_to_local(grid_pos)
 			set_movement_target(world_pos)
 		else:
-			# No work found
+			print("Retainer: No work found")
 			pass
 
 func perform_task() -> void:

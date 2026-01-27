@@ -39,7 +39,7 @@ func _on_stamina_changed(_new_amount: int) -> void:
 	update_ui()
 
 func update_ui() -> void:
-	day_label.text = "Day: " + str(Global.current_day)
-	inventory_label.text = "My Money: " + str(Global.money) + " | Items: " + str(Global.player_inventory)
-	king_label.text = "Reputation: " + str(Global.reputation) + " | King's Treasury: " + str(Global.king_storage)
-	stamina_label.text = "Stamina: " + str(Global.current_stamina) + "/" + str(Global.max_stamina)
+	day_label.text = "第 " + str(Global.current_day) + " 天"
+	inventory_label.text = "铜钱: " + str(Global.money) + " | 背包: " + str(Global.player_inventory)
+	king_label.text = "声望: " + str(Global.reputation) + " | 国库: " + str(Global.king_storage)
+	stamina_label.text = "体力: " + str(Global.current_stamina) + "/" + str(Global.max_stamina)

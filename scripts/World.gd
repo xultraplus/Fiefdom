@@ -13,7 +13,7 @@ var floating_text_scene = preload("res://scenes/FloatingText.tscn")
 var retainer_scene = preload("res://scenes/Retainer.tscn")
 
 func _ready() -> void:
-	millet_data.crop_name = "Millet"
+	millet_data.crop_name = "黍"
 	millet_data.days_to_grow = 2
 	var stages: Array[Vector2i] = [Vector2i(0,2), Vector2i(1,2), Vector2i(2,2)]
 	millet_data.stages_atlas_coords = stages
@@ -72,7 +72,7 @@ func water_crop(grid_pos: Vector2i) -> void:
 		var info = active_crops[grid_pos]
 		if not info["watered"]:
 			info["watered"] = true
-			spawn_floating_text(grid_pos, "Watered", Color.CYAN)
+			spawn_floating_text(grid_pos, "已浇水", Color.CYAN)
 			print("Crop watered at ", grid_pos)
 
 func setup_test_map() -> void:
@@ -108,7 +108,7 @@ func handle_interaction(grid_pos: Vector2i) -> void:
 
 func till_soil(grid_pos: Vector2i, current_atlas_coords: Vector2i) -> void:
 	if Global.current_stamina < 2:
-		spawn_floating_text(grid_pos, "No Stamina!", Color.RED)
+		spawn_floating_text(grid_pos, "体力不足！", Color.RED)
 		print("Not enough stamina to till!")
 		return
 		
@@ -118,12 +118,12 @@ func till_soil(grid_pos: Vector2i, current_atlas_coords: Vector2i) -> void:
 	# Change to tilled version (y=1)
 	var new_atlas_coords = Vector2i(current_atlas_coords.x, 1)
 	tile_map.set_cell(grid_pos, 0, new_atlas_coords)
-	spawn_floating_text(grid_pos, "Tilled", Color.WHITE)
+	spawn_floating_text(grid_pos, "已开垦", Color.WHITE)
 	print("Tilled at ", grid_pos)
 
 func plant_crop(grid_pos: Vector2i) -> void:
 	if Global.current_stamina < 2:
-		spawn_floating_text(grid_pos, "No Stamina!", Color.RED)
+		spawn_floating_text(grid_pos, "体力不足！", Color.RED)
 		print("Not enough stamina to plant!")
 		return
 
@@ -141,12 +141,12 @@ func plant_crop(grid_pos: Vector2i) -> void:
 		# Visual feedback: place seed
 		var seed_coords = millet_data.stages_atlas_coords[0]
 		crops_layer.set_cell(grid_pos, 0, seed_coords)
-		spawn_floating_text(grid_pos, "Planted", Color.GREEN)
+		spawn_floating_text(grid_pos, "已播种", Color.GREEN)
 		print("Planted at ", grid_pos)
 
 func harvest_crop(grid_pos: Vector2i) -> void:
 	if Global.current_stamina < 3:
-		spawn_floating_text(grid_pos, "No Stamina!", Color.RED)
+		spawn_floating_text(grid_pos, "体力不足！", Color.RED)
 		print("Not enough stamina!")
 		return
 
@@ -167,12 +167,12 @@ func harvest_crop(grid_pos: Vector2i) -> void:
 		crops_layer.erase_cell(grid_pos)
 		
 		if is_public:
-			spawn_floating_text(grid_pos, "Public Harvest!", Color.GOLD)
+			spawn_floating_text(grid_pos, "上缴国库！", Color.GOLD)
 		else:
-			spawn_floating_text(grid_pos, "Harvested!", Color.GREEN)
+			spawn_floating_text(grid_pos, "收获！", Color.GREEN)
 		print("Harvested!")
 	else:
-		spawn_floating_text(grid_pos, "Not Ready", Color.GRAY)
+		spawn_floating_text(grid_pos, "未成熟", Color.GRAY)
 		print("Not ready yet. Age: ", crop_info["age"])
 
 func spawn_floating_text(grid_pos: Vector2i, text: String, color: Color) -> void:

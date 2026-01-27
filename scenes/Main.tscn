@@ -37,7 +37,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 100.0
 offset_bottom = 33.0
-text = "Day: 1"
+text = "第 1 天"
 
 [node name="InventoryLabel" type="Label" parent="UI/Control" unique_id=188040551]
 layout_mode = 1
@@ -49,7 +49,7 @@ offset_top = -33.0
 offset_right = 200.0
 offset_bottom = -10.0
 grow_vertical = 0
-text = "Inventory"
+text = "背包"
 
 [node name="KingLabel" type="Label" parent="UI/Control" unique_id=225522846]
 layout_mode = 1
@@ -61,7 +61,7 @@ offset_top = 10.0
 offset_right = -10.0
 offset_bottom = 33.0
 grow_horizontal = 0
-text = "King's Treasury"
+text = "国库"
 
 [node name="StaminaLabel" type="Label" parent="UI/Control" unique_id=60873908]
 layout_mode = 1
@@ -73,7 +73,7 @@ offset_top = -60.0
 offset_right = 150.0
 offset_bottom = -37.0
 grow_vertical = 0
-text = "Stamina: 100/100"
+text = "体力: 100/100"
 
 [node name="SleepButton" type="Button" parent="UI/Control" unique_id=127106327]
 layout_mode = 1
@@ -88,7 +88,7 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Sleep"
+text = "睡觉"
 
 [node name="Fader" type="ColorRect" parent="UI/Control" unique_id=730486771]
 layout_mode = 1
