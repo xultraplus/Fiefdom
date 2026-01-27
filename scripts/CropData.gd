@@ -5,3 +5,6 @@ class_name CropData
 @export var days_to_grow: int
 @export var sell_price: int
 @export var stages_atlas_coords: Array[Vector2i]
+@export var is_water_crop: bool = false
+@export var is_perennial: bool = false
+@export var restores_fertility: bool = false

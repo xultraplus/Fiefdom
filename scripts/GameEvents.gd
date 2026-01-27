@@ -10,3 +10,7 @@ signal reputation_changed(amount: int)
 # Phase 2 Signals
 signal retainer_assigned(data: RetainerData, grid_pos: Vector2i)
 signal game_over()
+
+# Phase 3 Signals
+signal visitor_interacted(data: VisitorData)
+signal retainer_recruited(data: RetainerData)

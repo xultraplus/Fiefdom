@@ -100,6 +100,53 @@ text = "购买粮食 (5 铜钱 -> 1 粮食)"
 layout_mode = 2
 text = "作物转粮食 (1 作物 -> 1 粮食)"
 
+[node name="君子六艺" type="VBoxContainer" parent="HBoxContainer/RightPanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="HBoxContainer/RightPanel/君子六艺"]
+layout_mode = 2
+text = "君子六艺 (Character Stats)"
+
+[node name="StatsContainer" type="VBoxContainer" parent="HBoxContainer/RightPanel/君子六艺"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Actions" type="HBoxContainer" parent="HBoxContainer/RightPanel/君子六艺"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ReadButton" type="Button" parent="HBoxContainer/RightPanel/君子六艺/Actions"]
+layout_mode = 2
+text = "读书 (Read)"
+
+[node name="WorshipButton" type="Button" parent="HBoxContainer/RightPanel/君子六艺/Actions"]
+layout_mode = 2
+text = "祭祀 (Worship)"
+
+[node name="科技" type="VBoxContainer" parent="HBoxContainer/RightPanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="RankLabel" type="Label" parent="HBoxContainer/RightPanel/科技"]
+layout_mode = 2
+text = "当前爵位: 下士 (Lower Scholar)"
+
+[node name="TechContainer" type="VBoxContainer" parent="HBoxContainer/RightPanel/科技"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="IrrigationButton" type="Button" parent="HBoxContainer/RightPanel/科技/TechContainer"]
+layout_mode = 2
+text = "解锁水利 (Unlock Irrigation) - Need Literacy Lv.3"
+
+[node name="BowButton" type="Button" parent="HBoxContainer/RightPanel/科技/TechContainer"]
+layout_mode = 2
+text = "解锁复合弓 (Unlock Composite Bow) - Need Archery Lv.2"
+
 [node name="CloseButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 1

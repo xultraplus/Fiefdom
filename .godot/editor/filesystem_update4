@@ -10,3 +10,7 @@ res://scripts/Retainer.gd
 res://scripts/RetainerData.gd
 res://scripts/ManagementPanel.gd
 res://scripts/RetainerItem.gd
+res://scenes/ManagementPanel.tscn
+res://scripts/Arrow.gd
+res://scripts/Enemy.gd
+res://scripts/ItemManager.gd

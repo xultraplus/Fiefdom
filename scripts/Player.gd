@@ -10,8 +10,17 @@ var current_state = State.IDLE
 
 @onready var sprite = $Sprite2D
 @onready var selection_sprite = $SelectionSprite
+@onready var camera = $Camera2D
+
+var shake_strength: float = 0.0
+var shake_decay: float = 5.0
+
+var arrow_scene = preload("res://scenes/Arrow.tscn")
 
 var tile_map_ref: TileMapLayer
+
+func _ready() -> void:
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	# Get input direction
@@ -28,6 +37,11 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+	# Camera Shake
+	if shake_strength > 0:
+		shake_strength = lerp(shake_strength, 0.0, shake_decay * delta)
+		camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
+	
 	# Visual feedback
 	if velocity.x != 0:
 		sprite.flip_h = velocity.x < 0
@@ -37,6 +51,21 @@ func _physics_process(delta: float) -> void:
 	# Interaction
 	if Input.is_action_just_pressed("ui_accept"): # Default Enter/Space
 		interact()
+	
+	if Input.is_action_just_pressed("ui_cancel"): # Escape/Right Click? No, ui_cancel is usually Esc.
+		pass
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		shoot_arrow(get_global_mouse_position())
+
+func shoot_arrow(target_pos: Vector2) -> void:
+	var arrow = arrow_scene.instantiate()
+	arrow.global_position = global_position
+	arrow.direction = (target_pos - global_position).normalized()
+	arrow.rotation = arrow.direction.angle()
+	get_parent().add_child(arrow)
+	print("Fired arrow!")
 
 func update_selection_box() -> void:
 	if tile_map_ref:
@@ -68,8 +97,24 @@ func update_selection_box() -> void:
 		# Add (8,8) offset because Sprite is centered
 		selection_sprite.global_position = Vector2(grid_pos * 16) + Vector2(8, 8)
 
+func apply_shake(strength: float = 5.0) -> void:
+	shake_strength = strength
+
 func interact() -> void:
-	# This will be handled by the World script via signal or direct call
-	# For now, we just emit a signal or call a global function
-	# But in Godot 4, it's better to let the World handle the input mapping to tiles
+	# Check for nearby interactables (Visitors)
+	var interactables = get_tree().get_nodes_in_group("interactable")
+	var nearest_node = null
+	var min_dist = 60.0 # Pixel distance
+
+	for node in interactables:
+		var dist = global_position.distance_to(node.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			nearest_node = node
+	
+	if nearest_node and nearest_node.has_method("interact"):
+		nearest_node.interact()
+		return
+		
+	# Fallback: Tile interaction if needed (currently handled by World mouse input)
 	pass
