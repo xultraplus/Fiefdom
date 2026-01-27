@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://main_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/World.gd" id="1_world"]
+[ext_resource type="TileSet" path="res://resources/game_tileset.tres" id="2_tileset"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_player"]
+[ext_resource type="Script" path="res://scripts/UIManager.gd" id="4_ui"]
+
+[node name="Main" type="Node"]
+
+[node name="World" type="Node2D" parent="."]
+script = ExtResource("1_world")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_tileset")
+
+[node name="CropsLayer" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_tileset")
+
+[node name="Player" parent="World" instance=ExtResource("3_player")]
+position = Vector2(80, 80)
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("4_ui")
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DayLabel" type="Label" parent="UI/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 33.0
+text = "Day: 1"
+
+[node name="InventoryLabel" type="Label" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -33.0
+offset_right = 200.0
+offset_bottom = -10.0
+grow_vertical = 0
+text = "Inventory"
+
+[node name="KingLabel" type="Label" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 33.0
+grow_horizontal = 0
+text = "King's Treasury"
+
+[node name="SleepButton" type="Button" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -40.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Sleep"
