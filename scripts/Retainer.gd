@@ -124,9 +124,9 @@ func find_work() -> void:
 			return
 		else:
 			# Assigned area has no work. 
-			# For now, if assigned, ONLY work there.
-			print("Retainer: Assigned area ", assigned_area, " has no work.")
-			return
+			# Fallback: Help others (Look for nearest dry crop)
+			# print("Retainer: Assigned area ", assigned_area, " has no work. Looking for others.")
+			pass
 
 	if world.has_method("get_nearest_dry_crop"):
 		var grid_pos = world.get_nearest_dry_crop(global_position)
