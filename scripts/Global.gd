@@ -6,9 +6,15 @@ var player_inventory: int = 0 # Simple counter for Phase 1
 var king_storage: int = 0
 var money: int = 0
 var reputation: int = 0
+var max_stamina: int = 100
+var current_stamina: int = 100
 
 func _ready() -> void:
 	pass
+
+func restore_stamina() -> void:
+	current_stamina = max_stamina
+	print("Stamina Restored")
 
 func add_item(is_public: bool) -> void:
 	if is_public:

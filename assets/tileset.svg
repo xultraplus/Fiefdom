@@ -1,0 +1,28 @@
+<svg width="64" height="48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Row 0: Raw Soil -->
+  <!-- 0,0: Private Raw -->
+  <rect x="0" y="0" width="16" height="16" fill="#a18a6e" stroke="#85735e" stroke-width="1"/>
+  <!-- 1,0: Public Raw -->
+  <rect x="16" y="0" width="16" height="16" fill="#d6c87b" stroke="#b5a86b" stroke-width="1"/>
+  
+  <!-- Row 1: Tilled Soil -->
+  <!-- 0,1: Private Tilled -->
+  <rect x="0" y="16" width="16" height="16" fill="#6e5a42" stroke="#524331" stroke-width="1">
+    <path d="M2 18 h12 M2 22 h12 M2 26 h12" stroke="#4a3b2a" stroke-width="1"/>
+  </rect>
+  <!-- 1,1: Public Tilled -->
+  <rect x="16" y="16" width="16" height="16" fill="#968842" stroke="#756a33" stroke-width="1">
+    <path d="M18 18 h12 M18 22 h12 M18 26 h12" stroke="#665c2d" stroke-width="1"/>
+  </rect>
+
+  <!-- Row 2: Crops -->
+  <!-- 0,2: Seed -->
+  <circle cx="8" cy="40" r="3" fill="#90EE90" />
+  
+  <!-- 1,2: Sapling -->
+  <path d="M8 48 v-8 M4 40 l4 4 l4 -4" stroke="#32CD32" stroke-width="2" fill="none" transform="translate(16, 0)"/>
+  
+  <!-- 2,2: Mature -->
+  <path d="M8 48 v-12 M4 36 l4 4 l4 -4 M8 36 l0 -4" stroke="#FFD700" stroke-width="2" fill="none" transform="translate(32, 0)"/>
+  <circle cx="40" cy="34" r="3" fill="#FFD700" />
+</svg>

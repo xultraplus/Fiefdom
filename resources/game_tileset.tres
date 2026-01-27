@@ -1,19 +1,20 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://tileset_uid"]
+[gd_resource type="TileSet" format=3 uid="uid://bp7kea3f521rt"]
 
-[ext_resource type="Texture2D" path="res://icon.svg" id="1_tex"]
+[ext_resource type="Texture2D" uid="uid://b1wysqyuawdlj" path="res://assets/tileset.svg" id="1_tex"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
 texture = ExtResource("1_tex")
-margins = Vector2i(0, 0)
-separation = Vector2i(0, 0)
-texture_region_size = Vector2i(16, 16)
 0:0/0 = 0
-0:0/0/custom_data_0 = false
 1:0/0 = 0
 1:0/0/custom_data_0 = true
+0:1/0 = 0
+1:1/0 = 0
+1:1/0/custom_data_0 = true
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
 
 [resource]
-tile_size = Vector2i(16, 16)
 custom_data_layer_0/name = "is_public_field"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_1")
