@@ -24,29 +24,36 @@ var active_visitors: Array = []
 
 func _ready() -> void:
 	# millet_data.crop_name = "黍" ... # Moved to ItemManager
-	
+
 	GameEvents.day_advanced.connect(_on_day_advanced)
 	GameEvents.retainer_assigned.connect(_on_retainer_assigned)
 	GameEvents.retainer_recruited.connect(_on_retainer_recruited)
-	
+
 	# Setup initial map for testing (3x3 grid)
 	setup_test_map()
-	
+
+	# Initialize first well field if none exists
+	if Global.well_fields.is_empty():
+		Global.add_well_field(Vector2i(5, 5))
+		Global.well_fields[0]["is_unlocked"] = true  # First field is already ready
+		Global.well_fields[0]["reclamation_progress"] = 4
+		print("Initialized first well field at (5, 5)")
+
 	# Setup Navigation (Runtime generation for prototype)
 	setup_navigation()
-	
+
 	# Inject dependency
 	player.tile_map_ref = tile_map
-	
+
 	setup_wilderness_entrance()
-	
+
 	# Spawn retainers from Global
 	for r_data in Global.retainers:
 		spawn_retainer(r_data)
-	
+
 	# Restore crop visuals
 	restore_crops_visuals()
-	
+
 	# Enemy Spawner
 	var timer = Timer.new()
 	timer.wait_time = 30.0 # Every 30 seconds

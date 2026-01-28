@@ -8,82 +8,125 @@ extends CanvasLayer
 @onready var manage_button: Button = $Control/ManageButton
 @onready var fader: ColorRect = $Control/Fader
 
+var rank_label: Label
+var money_label: Label
+var reputation_label: Label
+var well_field_label: Label
+var quest_label: Label
+var stamina_bar: ProgressBar
+var reclaim_button: Button
+var settings_button: Button
+var debug_button: Button
+
 var management_panel_scene = preload("res://scenes/ManagementPanel.tscn")
 var dialogue_scene = preload("res://scenes/DialoguePanel.tscn")
+var reclamation_panel_scene = preload("res://scenes/ReclamationPanel.tscn")
+var debug_panel_scene = preload("res://scenes/DebugPanel.tscn")
 var management_panel_instance: Control
 var settings_panel_instance: Panel
-var quest_label: Label
+var debug_panel_instance: Panel
 var hotbar_label: Label
-var stamina_bar: ProgressBar
 
 func _ready() -> void:
+	# Dynamically create additional UI elements for new features
+	_create_extended_ui()
+
+	# Increase font sizes for better readability
+	_increase_font_sizes()
+
 	# Connect global signals
 	GameEvents.day_advanced.connect(_on_day_advanced)
 	GameEvents.crop_harvested.connect(_on_crop_harvested)
 	GameEvents.stamina_changed.connect(_on_stamina_changed)
 	GameEvents.visitor_interacted.connect(_on_visitor_interacted)
 	GameEvents.reputation_changed.connect(_on_reputation_changed)
-	
+
 	# Connect World signals
 	var world = get_node_or_null("../World")
 	if world:
 		if world.has_signal("seed_selected"):
 			world.seed_selected.connect(_on_seed_selected)
-	
-	# Connect button
+
+	# Connect existing buttons
 	sleep_button.pressed.connect(_on_sleep_pressed)
 	manage_button.pressed.connect(_on_manage_pressed)
-	
+
 	GameEvents.game_over.connect(_on_game_over)
-	
-	# Add Menu Button
-	var menu_btn = Button.new()
-	menu_btn.text = "设置 (Menu)"
-	menu_btn.position = Vector2(550, 10) # Top right
-	menu_btn.pressed.connect(_on_menu_pressed)
-	$Control.add_child(menu_btn)
-	
+
 	# Pre-instantiate settings panel
 	var settings_script = load("res://scripts/SettingsPanel.gd")
 	settings_panel_instance = settings_script.new()
 	settings_panel_instance.visible = false
 	$Control.add_child(settings_panel_instance)
-	
-	# Quest Label
-	quest_label = Label.new()
-	quest_label.position = Vector2(10, 80)
-	quest_label.add_theme_color_override("font_color", Color.YELLOW)
-	$Control.add_child(quest_label)
-	
-	# Hotbar Label (Placeholder for actual hotbar icons)
-	hotbar_label = Label.new()
-	hotbar_label.position = Vector2(250, 330) # Bottom center-ish
-	hotbar_label.text = "当前种子: 黍 (1)"
-	$Control.add_child(hotbar_label)
-	
-	# Stamina Bar
-	stamina_bar = ProgressBar.new()
-	stamina_bar.position = Vector2(10, 300)
-	stamina_bar.custom_minimum_size = Vector2(150, 20)
-	stamina_bar.max_value = 100
-	stamina_bar.value = 100
-	stamina_bar.show_percentage = false
-	# Add stylebox override if needed, but default is fine for prototype
-	$Control.add_child(stamina_bar)
-	# Hide old label if redundant, or keep it
-	stamina_label.visible = false
-	
+
+	# Add debug panel (only in debug builds)
+	if OS.has_feature("debug") or OS.is_debug_build():
+		debug_panel_instance = debug_panel_scene.instantiate()
+		$Control.add_child(debug_panel_instance)
+		# Add debug button manually since it's not in the original scene
+		_create_debug_button()
+	else:
+		debug_button = null
+
+	# Create reclaim and settings buttons
+	_create_action_buttons()
+
 	update_ui()
+
+func _create_extended_ui() -> void:
+	# Create rank label
+	rank_label = Label.new()
+	rank_label.position = Vector2(10, 40)
+	rank_label.add_theme_font_size_override("font_size", 16)
+	$Control.add_child(rank_label)
+
+	# Create money label (separate from inventory for better layout)
+	money_label = Label.new()
+	money_label.position = Vector2(10, 70)
+	money_label.add_theme_font_size_override("font_size", 16)
+	$Control.add_child(money_label)
+
+	# Create well field label
+	well_field_label = Label.new()
+	well_field_label.position = Vector2(10, 100)
+	well_field_label.add_theme_font_size_override("font_size", 14)
+	$Control.add_child(well_field_label)
+
+	# Create stamina bar if it doesn't exist
+	if not has_node("Control/StaminaBar"):
+		stamina_bar = ProgressBar.new()
+		stamina_bar.position = Vector2(10, 300)
+		stamina_bar.custom_minimum_size = Vector2(180, 20)
+		stamina_bar.max_value = 100
+		stamina_bar.value = 100
+		stamina_bar.show_percentage = false
+		stamina_bar.add_theme_font_size_override("font_size", 12)
+		$Control.add_child(stamina_bar)
+
+func _create_action_buttons() -> void:
+	# Create reclaim button
+	reclaim_button = Button.new()
+	reclaim_button.text = "开垦 (R)"
+	reclaim_button.position = Vector2(180, 10)
+	reclaim_button.custom_minimum_size = Vector2(100, 30)
+	reclaim_button.add_theme_font_size_override("font_size", 14)
+	$Control.add_child(reclaim_button)
+	reclaim_button.pressed.connect(_on_reclaim_pressed)
+
+	# Create settings button
+	settings_button = Button.new()
+	settings_button.text = "设置 (ESC)"
+	settings_button.position = Vector2(290, 10)
+	settings_button.custom_minimum_size = Vector2(100, 30)
+	settings_button.add_theme_font_size_override("font_size", 14)
+	$Control.add_child(settings_button)
+	settings_button.pressed.connect(_on_settings_pressed)
 
 func _on_seed_selected(seed_id: String) -> void:
 	var crop = ItemManager.get_crop(seed_id)
 	if crop:
-		hotbar_label.text = "当前种子: " + crop.crop_name
-
-func _on_menu_pressed() -> void:
-	settings_panel_instance.visible = not settings_panel_instance.visible
-	if settings_panel_instance.visible:
-		settings_panel_instance.move_to_front()
+		print("当前种子: ", crop.crop_name)
+		# TODO: Display selected seed in UI if needed
 
 func _on_visitor_interacted(data: VisitorData) -> void:
 	var dialog = dialogue_scene.instantiate()
@@ -146,17 +189,19 @@ func _on_game_over() -> void:
 	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	label.add_theme_font_size_override("font_size", 48)
 	label.add_theme_color_override("font_color", Color.RED)
-	
+
 	var bg = ColorRect.new()
 	bg.color = Color(0, 0, 0, 0.8)
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	
+
 	$Control.add_child(bg)
 	$Control.add_child(label)
-	
+
 	# Disable input
 	sleep_button.disabled = true
 	manage_button.disabled = true
+	reclaim_button.disabled = true
+	settings_button.disabled = true
 
 func _on_manage_pressed() -> void:
 	if management_panel_instance == null:
@@ -171,6 +216,29 @@ func _on_manage_pressed() -> void:
 func _on_close_management() -> void:
 	if management_panel_instance:
 		management_panel_instance.visible = false
+
+func _on_reclaim_pressed() -> void:
+	var reclamation_panel = reclamation_panel_scene.instantiate()
+	$Control.add_child(reclamation_panel)
+
+	# Get reference to tile map from World
+	var world = get_tree().current_scene.get_node_or_null("World")
+	if world and world.has_node("TileMapLayer"):
+		var tile_map = world.get_node("TileMapLayer")
+		reclamation_panel.setup(tile_map)
+	else:
+		print("Warning: Could not find TileMapLayer for reclamation panel")
+
+func _on_settings_pressed() -> void:
+	settings_panel_instance.visible = not settings_panel_instance.visible
+	if settings_panel_instance.visible:
+		settings_panel_instance.move_to_front()
+
+func _on_debug_pressed() -> void:
+	if debug_panel_instance:
+		debug_panel_instance.visible = not debug_panel_instance.visible
+		if debug_panel_instance.visible:
+			debug_panel_instance.move_to_front()
 
 func _on_sleep_pressed() -> void:
 	var tween = create_tween()
@@ -199,13 +267,63 @@ func _on_reputation_changed(_new_amount: int) -> void:
 		pass
 
 func update_ui() -> void:
-	day_label.text = "第 " + str(Global.current_day) + " 天"
-	inventory_label.text = "铜钱: " + str(Global.money) + " | 背包: " + str(Global.player_inventory)
-	king_label.text = "声望: " + str(Global.reputation) + " | 国库: " + str(Global.king_storage)
-	# stamina_label.text = "体力: " + str(Global.current_stamina) + "/" + str(Global.max_stamina)
-	if stamina_bar:
+	# Update all labels
+	if day_label and is_instance_valid(day_label):
+		day_label.text = "第 %d 天" % Global.current_day
+
+	if rank_label and is_instance_valid(rank_label):
+		var rank_name = Global.rank_names.get(Global.current_rank, "未知")
+		rank_label.text = "爵位: %s" % rank_name
+
+	if money_label and is_instance_valid(money_label):
+		money_label.text = "铜钱: %d" % Global.money
+
+	if inventory_label and is_instance_valid(inventory_label):
+		inventory_label.text = "背包: %d" % Global.player_inventory
+
+	if reputation_label and is_instance_valid(reputation_label):
+		reputation_label.text = "声望: %d" % Global.reputation
+
+	if king_label and is_instance_valid(king_label):
+		king_label.text = "国库: %d" % Global.king_storage
+
+	if well_field_label and is_instance_valid(well_field_label):
+		well_field_label.text = "井田: %d/%d" % [Global.well_fields.size(), Global.max_well_fields]
+
+	# Update stamina bar
+	if stamina_bar and is_instance_valid(stamina_bar):
 		stamina_bar.max_value = Global.max_stamina
 		stamina_bar.value = Global.current_stamina
-		
-	if quest_label:
+
+	# Update quest
+	if quest_label and is_instance_valid(quest_label):
 		quest_label.text = Global.current_quest
+
+func _create_debug_button() -> void:
+	debug_button = Button.new()
+	debug_button.text = "Debug (H)"
+	debug_button.position = Vector2(400, 10)
+	debug_button.custom_minimum_size = Vector2(100, 30)
+	debug_button.add_theme_font_size_override("font_size", 14)
+	$Control.add_child(debug_button)
+	debug_button.pressed.connect(_on_debug_pressed)
+
+func _increase_font_sizes() -> void:
+	# Increase font sizes for existing labels in the .tscn file
+	if day_label and is_instance_valid(day_label):
+		day_label.add_theme_font_size_override("font_size", 16)
+
+	if inventory_label and is_instance_valid(inventory_label):
+		inventory_label.add_theme_font_size_override("font_size", 16)
+
+	if king_label and is_instance_valid(king_label):
+		king_label.add_theme_font_size_override("font_size", 16)
+
+	if stamina_label and is_instance_valid(stamina_label):
+		stamina_label.add_theme_font_size_override("font_size", 14)
+
+	if sleep_button and is_instance_valid(sleep_button):
+		sleep_button.add_theme_font_size_override("font_size", 16)
+
+	if manage_button and is_instance_valid(manage_button):
+		manage_button.add_theme_font_size_override("font_size", 16)

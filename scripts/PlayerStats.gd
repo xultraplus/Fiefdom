@@ -40,6 +40,12 @@ func get_stat(art_enum: int) -> Dictionary:
 	var key = Art.keys()[art_enum]
 	return stats.get(key, {})
 
+func get_level(art_enum: int) -> int:
+	var key = Art.keys()[art_enum]
+	if not stats.has(key):
+		return 1
+	return stats[key]["level"]
+
 func add_xp(art_enum: int, amount: int) -> void:
 	var key = Art.keys()[art_enum]
 	if not stats.has(key):

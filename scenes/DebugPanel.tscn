@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=3 uid="uid://debug_panel_uid"]
+
+[ext_resource type="Script" path="res://scripts/DebugPanel.gd" id="1_script"]
+
+[node name="DebugPanel" type="Panel"]
+offset_right = 250.0
+offset_bottom = 400.0
+script = ExtResource("1_script")
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 240.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "DEBUG面板"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 45.0
+offset_right = 240.0
+offset_bottom = 360.0
+theme_override_constants/separation = 5
+
+[node name="DayLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Day: 1"
+
+[node name="MoneyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Money: 0"
+
+[node name="FoodLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Food: 0"
+
+[node name="ReputationLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Reputation: 0"
+
+[node name="RankLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Rank: Unknown"
+
+[node name="AddMoneyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "+1000 铜钱"
+
+[node name="AddFoodButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "+100 粮食"
+
+[node name="AddRepButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "+500 声望"
+
+[node name="PromoteButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "提升爵位"
+
+[node name="TriggerEventButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "触发初税亩事件"
+
+[node name="AddRetainerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "添加随机门客"
+
+[node name="ToggleVisibilityButton" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -35.0
+offset_right = -10.0
+text = "隐藏 (H)"

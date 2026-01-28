@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_player"]
 [ext_resource type="Script" uid="uid://dd0uqup0hk8b5" path="res://scripts/UIManager.gd" id="4_ui"]
 [ext_resource type="Theme" uid="uid://game_theme_uid" path="res://resources/game_theme.tres" id="5_theme"]
+[ext_resource type="Script" path="res://scripts/WellFieldMarker.gd" id="6_marker"]
 
 [node name="Main" type="Node" unique_id=310311831]
 
@@ -13,6 +14,8 @@ script = ExtResource("1_world")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="World" unique_id=1265781007]
 tile_set = ExtResource("2_tileset")
+[node name="WellFieldMarker" type="Node2D" parent="World/TileMapLayer"]
+script = ExtResource("6_marker")
 
 [node name="CropsLayer" type="TileMapLayer" parent="World" unique_id=43186087]
 tile_set = ExtResource("2_tileset")
