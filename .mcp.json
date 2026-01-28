@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "godot-ultimate": {
+      "command": "node",
+      "args": [
+        "D:\\VideProjects\\game\\godot-mcp-ultimate\\dist\\index.js"
+      ],
+      "env": {
+        "GODOT_PROJECT_PATH": "D:\\VideProjects\\game\\project.godot",
+        "GODOT_PATH": "D:\\Godot_v4.6\\Godot_v4.6-stable_win64.exe",
+        "GODOT_LSP_PORT": "6005"
+      }
+    }
+  }
+}

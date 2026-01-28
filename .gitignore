@@ -1,0 +1,5 @@
+# Godot editor files
+.godot/
+
+# Node modules
+godot-mcp-ultimate/node_modules/
